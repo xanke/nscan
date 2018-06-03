@@ -11,7 +11,8 @@ const cheerio = require('cheerio')
 
 function downloader(NScan) {
   // 启动下载器
-  NScan.prototype.start = function() {
+  NScan.prototype.start = async function() {
+    console.log('start')
     const { schedules } = this
 
     if (!schedules) {
@@ -19,14 +20,14 @@ function downloader(NScan) {
       return
     }
 
-    for (url of schedules) {
-      this.download(url)
+    for (const url of schedules) {
+      await this.download(url)
     }
   }
 
   // 下载网页
   NScan.prototype.download = async function(url) {
-    console.log(url, 'download')
+    // console.log(url, 'download', Date.now())
     const data = await superAgent(url)
     const { body } = data
 
@@ -35,31 +36,42 @@ function downloader(NScan) {
       const list = $('.list-item-link')
       const detail = $('.building-box')
 
-      if (!list && !detail) {
+      if (list.length === 0 && detail.length === 0) {
         console.log(url, 'no-content')
         return
       }
 
       // 列表页面
-      if (list) {
+      if (list.length > 0) {
         list.each((index, item) => {
           item = $(item)
           const name = item.find('h2').text()
-          const url = this.host  + item.find('a').attr('href')
-          this.pushSchedules(url)
+          const _url = this.host  + item.find('a').attr('href')
+          this.pushSchedules(_url)
         })
+        this.finishDownload(url)
+        // this.start()
       }
 
       // 详情页面
-      if (detail) {
-        const name = detail.find('h3').text()
-        console.log(name)
-        
+      if (detail.length > 0) {
+        const name = $('.top-buildingName h1').text()
+        const finshYear = detail.find('.feature .full').eq(0).find('.f-con').text()
+        const address = detail.find('.f-con a').text()
+        const picUrl = detail.find('.listing_img').attr('src')
+        const origin = 'diandianzu'
+
+        const data = {
+          name,
+          address,
+          finshYear,
+          picUrl,
+          origin,
+          url
+        }
+        console.log(data)
         this.finishDownload(url)
       }
-
-      this.finishDownload(url)
-      this.start()
     }
   }
 }

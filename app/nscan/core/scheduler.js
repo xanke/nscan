@@ -24,7 +24,6 @@ function scheduler(NScan) {
   // 完成下载
   NScan.prototype.finishDownload = function(url) {
     const { schedules } = this
-    console.log(url)
     schedules.delete(url)
   }
 
