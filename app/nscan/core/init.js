@@ -13,16 +13,18 @@ const cheerio = require('cheerio')
 function init(NScan) {
   NScan.prototype._init = function(options) {
     const { scan, data = {} } = options
-    let { url } = scan
+    let { url, sleep = 0 } = scan
     if (!url) {
       warn('缺少 url')
     }
 
+    this.sleep = sleep
     this.cheerio = cheerio
     this.data = data
     this.host = getHost(url)
     this.options = options
-    this.schedules = new Set()
+    this.schedules = []
+    this.urls = new Set()
   }
 }
 

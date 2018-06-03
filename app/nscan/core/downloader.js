@@ -12,71 +12,131 @@ const cheerio = require('cheerio')
 function downloader(NScan) {
   // 初始化下载解析器
   NScan.prototype.initDownloader = function() {
-    const { isList, list, isDetail, detail } = this.options
+    const { isList = false, list = false, isDetail, detail } = this.options
     this.isList = isList,
     this.list = list,
     this.isDetail = isDetail
     this.detail = detail
   },
 
-  // 启动下载器
+  // 获取任务
   NScan.prototype.start = async function() {
-    console.log('start')
     const { schedules } = this
 
-    if (!schedules) {
-      console.log('no schedules')
-      return
-    }
+    const scan = schedules.pop()
 
-    for (const url of schedules) {
-      await this.download(url)
+    if (scan) {
+      setTimeout(async () => {  
+        await this.download(scan)
+      }, this.sleep)
+    } else {
+      console.log('no-schedules')
     }
   }
 
   // 下载网页
-  NScan.prototype.download = async function(url) {
-    console.log(url, 'download', Date.now())
-    const data = await superAgent(url)
-    const { body } = data
+  NScan.prototype.download = async function(scan) {
+    const { url, method, data, headers } = scan
+    console.log(url, method, Date.now())
 
-    if (data.text) {
-      const $ = cheerio.load(data.text)
-      this.$ = $
-
-      const list = this.isList()
-      const detail = this.isDetail()
-
-      if (list.length === 0 && detail.length === 0) {
-        console.log(url, 'no-content')
-        return
+    let ret
+    try {
+      if (method === 'GET') {
+        ret = await superAgent(url)
+      } else {
+        ret = await superAgent.post(url).set(headers).send(data)
       }
+    } catch (e) {
+      if (!this.isList) {
+        this.nextPage()
+        this.start()
+      }
+      return
+    }
 
-      // 列表页面
-      if (list.length > 0) {
+    // 无内容
+    if (!ret.text) {
+      return
+    }
+
+    // 内容格式判断
+    let $, mode
+    if (ret.type === 'application/json') {
+      $ = ret.body
+      mode = 'json'
+    } else {
+      mode = 'html'
+      $ = cheerio.load(ret.text)
+    }
+    this.$ = $
+
+
+    let list, detail
+    if (this.isList) {
+      list = this.isList()
+    }
+
+    detail= this.isDetail()
+
+    // 判断是否无内容
+    if (!list && !detail) {
+      console.log(url, 'no-content')
+      return
+    }
+
+    if (mode === 'html' && list && list.length === 0) {
+      list = false
+    }
+
+    // 列表页面
+    if (list) {
+      // HTML 模式
+      if (mode === 'html') {
         list.each((index, item) => {
           this.$list = $(item)
           let _url = this.list()
           _url = this.host + _url
           this.pushSchedules(_url)
         })
-        this.finishDownload(url)
-        this.nextPage()
+      } else {
+        // JSON 模式
+        list.forEach(item => {
+          this.$list = item
+          
+          let _url = this.list()
+          _url = this.host + _url
+
+          this.pushSchedules(_url)
+        })
+        this.start()
       }
 
-      // 详情页面
-      if (detail.length > 0) {
-        this.$detail = detail
-        const insert = this.detail()
+      this.finishDownload(url)
+      this.start()
+    } else {
+      this.$detail = detail
+      const insert = this.detail()
 
+      this.$detail = null
+
+      if (insert) {
         // 合并公共字段
         Object.assign(insert, this.data)
         insert.url = url
         
         // 导入数据库
         await this.insertDb(insert)
-        this.finishDownload(url)
+      } else {
+        console.log(url, 'no-data')
       }
+      
+      // 直接采集详情页模式
+      if (!this.isList) {
+        this.nextPage()
+      }
+      
+      this.start()
+      this.finishDownload(url)
     }
   }
 }
