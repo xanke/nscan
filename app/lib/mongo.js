@@ -23,6 +23,15 @@ const BuildingsSchema = new Schema('Buildings', {
   name: {
     type: String
   },
+  city: {
+    type: String
+  },
+  address: {
+    type: String
+  },
+  picUrl: {
+    type: String
+  },
   data: {
     type: Object
   },

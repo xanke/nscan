@@ -27,7 +27,7 @@ function downloader(NScan) {
 
   // 下载网页
   NScan.prototype.download = async function(url) {
-    // console.log(url, 'download', Date.now())
+    console.log(url, 'download', Date.now())
     const data = await superAgent(url)
     const { body } = data
 
@@ -62,14 +62,15 @@ function downloader(NScan) {
         const origin = 'diandianzu'
 
         const data = {
-          address,
           finshYear,
-          picUrl
         }
 
         const insert = {
-          data,
           name,
+          city: '上海',
+          address,
+          picUrl,
+          data,
           url,
           origin
         }
