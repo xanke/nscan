@@ -78,14 +78,19 @@ function downloader(NScan) {
 
     detail= this.isDetail()
 
+    
+    if (mode === 'html' && list && list.length === 0) {
+      list = false
+    }
+    
+    if (mode === 'html' && detail && detail.length === 0) {
+      detail = false
+    }
+
     // 判断是否无内容
     if (!list && !detail) {
       console.log(url, 'no-content')
       return
-    }
-
-    if (mode === 'html' && list && list.length === 0) {
-      list = false
     }
 
     // 列表页面
