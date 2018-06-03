@@ -1,7 +1,6 @@
-const Buildings = require('../lib/mongo').Buildings
+const Buildings = require('./mongo').Buildings
 
 module.exports = {
-  
   // 网址和分页
   scan: {
     url: 'http://nb.diandianzu.com/listing/p{{page}}',
@@ -42,8 +41,7 @@ module.exports = {
       name,
       address,
       picUrl,
-      data,
-      origin
+      data
     }
     return insert
   },

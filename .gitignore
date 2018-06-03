@@ -3,3 +3,5 @@ _notes
 logs
 .DS_Store
 node_modules
+app/scan
+app/start.js

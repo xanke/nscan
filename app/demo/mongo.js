@@ -17,8 +17,6 @@ mongolass.connect(config.mongodb, {
   poolSize: 5
 })
 
-exports.Companies = mongolass.model('Companies')
-
 const BuildingsSchema = new Schema('Buildings', {
   name: {
     type: String
