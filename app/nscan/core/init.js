@@ -7,6 +7,7 @@
 */
 
 const { getHost } = require('../utils')
+const cheerio = require('cheerio')
 
 function init(NScan) {
   NScan.prototype._init = function(options) {
@@ -17,6 +18,7 @@ function init(NScan) {
       return
     }
 
+    this.cheerio = cheerio
     this.data = data
     this.host = getHost(url)
     this.options = options

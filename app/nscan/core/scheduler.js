@@ -32,7 +32,6 @@ function scheduler(NScan) {
     schedules.delete(url)
 
     if (schedules.size === 0) {
-      console.log('finish')
       process.exit()
     }
   }

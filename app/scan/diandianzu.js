@@ -7,9 +7,32 @@ module.exports = {
     city: '上海'
   },
   isList() {
-    $('.list-item-link')
+    return this.$('.list-item-link')
   },
   list() {
-    this.find('a').attr('href')
+    return this.$list.find('a').attr('href')
+  },
+  isDetail() {
+    return this.$('.building-box')
+  },
+  detail() {
+    const name = this.$('.top-buildingName h1').text()
+    const finshYear = this.$detail.find('.feature .full').eq(0).find('.f-con').text()
+    const address = this.$detail.find('.f-con a').text()
+    const picUrl = this.$detail.find('.listing_img').attr('src')
+    const origin = 'diandianzu'
+
+    const data = {
+      finshYear,
+    }
+
+    const insert = {
+      name,
+      address,
+      picUrl,
+      data,
+      origin
+    }
+    return insert
   }
 }
