@@ -1,4 +1,4 @@
 const NScan = require('./nscan')
-const diandianzu = require('./scan/diandianzu.js')
+const diandianzu = require('./demo/diandianzu.js')
 
 const nscan = new NScan(diandianzu)

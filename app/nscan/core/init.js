@@ -7,6 +7,7 @@
 */
 
 const { getHost } = require('../utils')
+const { warn } = require('../utils/debug')
 const cheerio = require('cheerio')
 
 function init(NScan) {
@@ -14,8 +15,7 @@ function init(NScan) {
     const { scan, data = {} } = options
     let { url } = scan
     if (!url) {
-      console.log('no-url')
-      return
+      warn('缺少 url')
     }
 
     this.cheerio = cheerio
