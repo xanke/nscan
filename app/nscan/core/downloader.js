@@ -50,6 +50,7 @@ function downloader(NScan) {
           this.pushSchedules(_url)
         })
         this.finishDownload(url)
+        this.nextPage()
         // this.start()
       }
 
@@ -67,12 +68,12 @@ function downloader(NScan) {
 
         const insert = {
           name,
-          city: '上海',
           address,
           picUrl,
           data,
           url,
-          origin
+          origin,
+          ...this.data
         }
 
         await this.insertDb(insert)

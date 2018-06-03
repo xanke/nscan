@@ -9,15 +9,20 @@
 function scheduler(NScan) {
   // 初始化网址列表处理器
   NScan.prototype.initSchedules = function() {
-    const { url, query } = this.options
-    this.query = query
+    const { scan } = this.options
+    let { url, page } = scan
 
-    for (key in query) {
-      let val = query[key]
-      let _url = url.replace('{{' + key + '}}', query[key])
-      this.schedules.add(_url)
+    this.url = url
+
+    // 分页解析
+    if (page) {
+      this.page = page
+      url = url.replace('{{page}}', page)
+    } else {
+      this.page = false
     }
-    
+
+    this.schedules.add(url)
     this.initSchedules = true
   }
 
@@ -26,7 +31,7 @@ function scheduler(NScan) {
     const { schedules } = this
     schedules.delete(url)
 
-    if (schedules.size === 0 ){
+    if (schedules.size === 0) {
       console.log('finish')
       process.exit()
     }
@@ -37,7 +42,13 @@ function scheduler(NScan) {
     this.schedules.add(url)
   }
 
-  NScan.prototype.nextSchedules = function() {}
+  // 下一页
+  NScan.prototype.nextPage = function() {
+    const page = this.page + 1
+    const url = this.url.replace('{{page}}', page)
+    this.pushSchedules(url)
+    this.page = page
+  }
 }
 
 module.exports = scheduler

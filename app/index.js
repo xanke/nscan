@@ -1,10 +1,4 @@
 const NScan = require('./nscan')
+const diandianzu = require('./scan/diandianzu.js')
 
-const options = {
-  url: 'http://sh.diandianzu.com/listing/p{{page}}',
-  query: {
-    page: 2
-  }
-}
-
-const nscan = new NScan(options)
+const nscan = new NScan(diandianzu)

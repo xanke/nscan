@@ -6,16 +6,18 @@
 |
 */
 
-const { getHost } = require('../../utils')
+const { getHost } = require('../utils')
 
 function init(NScan) {
   NScan.prototype._init = function(options) {
-    const { url } = options
+    const { scan, data = {} } = options
+    let { url } = scan
     if (!url) {
       console.log('no-url')
       return
     }
 
+    this.data = data
     this.host = getHost(url)
     this.options = options
     this.schedules = new Set()
