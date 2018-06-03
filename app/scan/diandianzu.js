@@ -1,3 +1,5 @@
+const Buildings = require('../lib/mongo').Buildings
+
 module.exports = {
   scan: {
     url: 'http://sh.diandianzu.com/listing/p{{page}}',
@@ -34,5 +36,14 @@ module.exports = {
       origin
     }
     return insert
+  },
+  insert(url, data) {
+    Buildings.update(
+      { url },
+      { $set: data },
+      {
+        upsert: true
+      }
+    ).exec()
   }
 }

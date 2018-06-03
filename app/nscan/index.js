@@ -7,6 +7,7 @@ function NScan (options) {
   this._init(options)
   this.initSchedules()
   this.initDownloader()
+  this.initPipeline()
   this.start()
 }
 
