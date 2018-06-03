@@ -62,14 +62,19 @@ function downloader(NScan) {
         const origin = 'diandianzu'
 
         const data = {
-          name,
           address,
           finshYear,
-          picUrl,
-          origin,
-          url
+          picUrl
         }
-        console.log(data)
+
+        const insert = {
+          data,
+          name,
+          url,
+          origin
+        }
+
+        await this.insertDb(insert)
         this.finishDownload(url)
       }
     }
