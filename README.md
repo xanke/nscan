@@ -4,7 +4,7 @@
 
 ## 快速开始
 
-### 数据库配置：
+**数据库配置：**
 
 /app/config/default.js
 
@@ -14,11 +14,11 @@ module.exports = {
 }
 ```
 
-### 采集示例和配置详见：
+**采集示例和配置详见：**
 
 /app/demo/
 
-### 启动采集：
+**启动采集：**
 
 ```shell
 npm run start
