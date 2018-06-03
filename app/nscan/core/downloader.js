@@ -99,19 +99,18 @@ function downloader(NScan) {
       if (mode === 'html') {
         list.each((index, item) => {
           this.$list = $(item)
-          let _url = this.list()
-          _url = this.host + _url
-          this.pushSchedules(_url)
+          let url = this.list()
+          if (url) {
+            console.log(url)
+            this.pushSchedules(url)
+          }
         })
       } else {
         // JSON 模式
         list.forEach(item => {
           this.$list = item
-          
-          let _url = this.list()
-          _url = this.host + _url
-
-          this.pushSchedules(_url)
+          let url = this.list()
+          this.pushSchedules(url)
         })
         this.start()
       }

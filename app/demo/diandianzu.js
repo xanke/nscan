@@ -20,7 +20,7 @@ module.exports = {
 
   // 列表获取 Url
   list() {
-    return this.$list.find('a').attr('href')
+    return this.host + this.$list.find('a').attr('href')
   },
 
   // 详情页判断
