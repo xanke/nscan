@@ -25,6 +25,11 @@ function scheduler(NScan) {
   NScan.prototype.finishDownload = function(url) {
     const { schedules } = this
     schedules.delete(url)
+
+    if (schedules.size === 0 ){
+      console.log('finish')
+      process.exit()
+    }
   }
 
   // 增加网站

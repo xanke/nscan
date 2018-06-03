@@ -8,14 +8,32 @@
 
 const config = require('config-lite')(__dirname)
 const Mongolass = require('mongolass')
+const Schema = Mongolass.Schema
 
 const mongolass = new Mongolass()
-const dbOptions = {
+
+mongolass.connect(config.mongodb, {
   autoReconnect: false,
   poolSize: 5
-}
-
-mongolass.connect(config.mongodb, dbOptions)
+})
 
 exports.Companies = mongolass.model('Companies')
-exports.Buildings = mongolass.model('Buildings')
+
+const BuildingsSchema = new Schema('Buildings', {
+  name: {
+    type: String
+  },
+  data: {
+    type: Object
+  },
+  utime: {
+    type: Date
+  },
+  origin: {
+    type: String
+  },
+  url: {
+    type: String
+  }
+})
+exports.Buildings = mongolass.model('Buildings', BuildingsSchema)
