@@ -1,6 +1,6 @@
 {
   "name": "nscan",
-  "version": "0.2.0",
+  "version": "0.2.5",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,6 +13,7 @@
     "cheerio": "^1.0.0-rc.2",
     "config-lite": "^2.1.0",
     "mongolass": "^4.3.1",
-    "superagent": "^3.8.3"
+    "superagent": "^3.8.3",
+    "superagent-charset": "^1.2.0"
   }
 }

@@ -6,7 +6,8 @@
 |
 */
 
-const superAgent = require('superagent')
+const charset = require('superagent-charset')
+const superAgent = charset(require('superagent'));
 const cheerio = require('cheerio')
 
 function downloader(NScan) {
@@ -42,7 +43,7 @@ function downloader(NScan) {
     let ret
     try {
       if (method === 'GET') {
-        ret = await superAgent(url)
+        ret = await superAgent.get(url).charset()
       } else {
         ret = await superAgent.post(url).set(headers).send(data)
       }
