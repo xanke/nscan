@@ -1,5 +1,10 @@
-// const CompaniesModel = require('../../models/companies')
-// const Buildings = require('../../lib/mongo').Buildings
+/*
++-----------------------------------------------------------------------------------------------------------------------
+| Author: xank <xank@qq.com>  Blog：https://www.xank.cn
++-----------------------------------------------------------------------------------------------------------------------
+| Pipeline 数据输出管道
+|
+*/
 
 function pipeline(NScan) {
   NScan.prototype.initPipeline = function() {
